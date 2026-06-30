@@ -1,5 +1,3 @@
-/* routes */
-
 import { Router } from 'express'
 import { db } from '../db/index.js'
 import { todos } from '../db/schema.js'
@@ -8,7 +6,7 @@ import { createTodoSchema, updateTodoSchema } from '../validators/index.js'
 import { eq, and } from 'drizzle-orm'
 
 const router = Router()
-router.use(authenticate)   // all todo routes require auth
+router.use(authenticate)
 
 router.get('/', async (req, res) => {
   const items = await db.query.todos.findMany({
@@ -22,9 +20,16 @@ router.post('/', async (req, res) => {
   const parsed = createTodoSchema.safeParse(req.body)
   if (!parsed.success) return res.status(400).json({ errors: parsed.error.flatten() })
 
+  const { dueDate, ...rest } = parsed.data
+
   const [todo] = await db.insert(todos)
-    .values({ ...parsed.data, userId: req.user.sub })
+    .values({
+      ...rest,
+      dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+      userId: req.user.sub,
+    })
     .returning()
+
   res.status(201).json(todo)
 })
 
@@ -32,8 +37,14 @@ router.patch('/:id', async (req, res) => {
   const parsed = updateTodoSchema.safeParse(req.body)
   if (!parsed.success) return res.status(400).json({ errors: parsed.error.flatten() })
 
+  const { dueDate, ...rest } = parsed.data
+
   const [todo] = await db.update(todos)
-    .set({ ...parsed.data, updatedAt: new Date() })
+    .set({
+      ...rest,
+      ...(dueDate !== undefined && { dueDate: new Date(dueDate).toISOString() }),
+      updatedAt: new Date().toISOString(),
+    })
     .where(and(eq(todos.id, req.params.id), eq(todos.userId, req.user.sub)))
     .returning()
 
