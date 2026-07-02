@@ -5,8 +5,8 @@ import type { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import authRouter from "./routes/auth.js";
-import todosRouter from "./routes/todos.js";
+import authRouter from "./routes/auth.ts";
+import todosRouter from "./routes/todos.ts";
 
 const app = express();
 
