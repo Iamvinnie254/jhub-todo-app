@@ -60,7 +60,9 @@ router.patch("/:id", async (req: AuthRequest, res: Response) => {
       ...(dueDate !== undefined && { dueDate: toISOString(dueDate) }),
       updatedAt: new Date().toISOString(),
     })
-    .where(and(eq(todos.id, String(req.params.id)), eq(todos.userId, req.user!.sub)))
+    .where(
+      and(eq(todos.id, String(req.params.id)), eq(todos.userId, req.user!.sub)),
+    )
     .returning();
 
   if (!todo) {
@@ -74,7 +76,9 @@ router.patch("/:id", async (req: AuthRequest, res: Response) => {
 router.delete("/:id", async (req: AuthRequest, res: Response) => {
   const [deleted] = await db
     .delete(todos)
-    .where(and(eq(todos.id, String(req.params.id)), eq(todos.userId, req.user!.sub)))
+    .where(
+      and(eq(todos.id, String(req.params.id)), eq(todos.userId, req.user!.sub)),
+    )
     .returning();
 
   if (!deleted) {
