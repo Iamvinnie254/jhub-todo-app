@@ -1,11 +1,11 @@
 {
   "name": "todo-server",
   "version": "0.0.0",
-  "private": true,
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "node --watch app.js"
+    "dev": "tsx watch src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -25,9 +25,16 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",
+    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^26.1.0",
     "@types/pg": "^8.20.0",
-    "drizzle-kit": "^0.31.10"
+    "drizzle-kit": "^0.31.10",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
   }
 }
