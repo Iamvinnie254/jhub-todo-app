@@ -114,7 +114,7 @@ jhub-todo-app/
 ### `todo-server/.env`
 
 ```env
-DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/jhub_todo_app_db
+DATABASE_URL=postgresql://postgres:root@localhost:5432/jhub_todo_app_db
 JWT_SECRET=your_long_random_secret
 JWT_EXPIRES_IN=7d
 PORT=5000
